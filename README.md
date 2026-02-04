@@ -1,19 +1,56 @@
-# Gerador de Plano de Atividades para Crianças
+# Curso de LangChain - Aulas Práticas
 
-Aplicação Python que utiliza LangChain e a API da OpenAI para gerar planos de atividades personalizados para crianças.
+Repositório com exemplos práticos de uso do LangChain com a API da OpenAI, cobrindo desde conceitos básicos até cadeias complexas.
 
 ## 📋 Descrição
 
-Este projeto utiliza o LangChain com o modelo GPT-3.5-turbo da OpenAI para criar planos de atividades educativas e divertidas para crianças. O usuário pode definir o número de dias, quantidade de crianças e o tema das atividades (ex: música, arte, esportes), e o sistema gera automaticamente um plano completo com atividades principais e descrições para cada dia.
+Este projeto contém uma série de aulas práticas que demonstram o uso progressivo do framework LangChain para construir aplicações com modelos de linguagem (LLMs). Cada aula introduz novos conceitos e técnicas.
 
-## 🚀 Funcionalidades
+## 📚 Conteúdo das Aulas
 
-- Geração automática de planos de atividades para crianças
-- Personalização por número de dias e quantidade de crianças
-- Foco em temas específicos (música, arte, esportes, etc.)
-- Integração com LangChain e API da OpenAI
-- Uso do modelo GPT-3.5-turbo
-- Gerenciamento seguro de chaves de API via variáveis de ambiente
+### [aula001.py](aula001.py) - Introdução ao LangChain com OpenAI
+- Configuração básica do ambiente
+- Uso do `ChatOpenAI` para chamadas diretas ao modelo
+- Criação de prompts simples com f-strings
+- Invocação do modelo e obtenção de respostas
+
+### [aula002.py](aula002.py) - Usando ChatPromptTemplate
+- `ChatPromptTemplate` para prompts estruturados
+- Separação de mensagens de sistema e usuário
+- Variáveis de template com placeholders `{}`
+- Formatação de prompts com `.format()`
+
+### [aula003.py](aula003.py) - Introdução às Cadeias com LCEL
+- `PromptTemplate` para templates simples
+- Operador pipe (`|`) para encadeamento - LCEL
+- `StrOutputParser` para extrair texto puro
+- Sintaxe declarativa do LangChain Expression Language
+
+### [aula004.py](aula004.py) - Saída Estruturada com JSON
+- `JsonOutputParser` para respostas em JSON
+- Validação com modelos Pydantic (`BaseModel`, `Field`)
+- `partial_variables` para instruções de formato
+- Modo debug com `set_debug(True)`
+
+### [aula005.py](aula005.py) - Encadeamento de Múltiplas Cadeias
+- Múltiplos modelos Pydantic para diferentes respostas
+- Encadeamento sequencial de cadeias
+- Passagem de dados entre cadeias
+- Composição de pipelines complexos
+
+### [aula006.py](aula006.py) - Revisão: Cadeias Simples
+- Consolidação dos conceitos de cadeias com LCEL
+- Exemplo prático de recomendação de cidades
+- Revisão do fluxo `prompt -> modelo -> parser`
+
+## 🚀 Tecnologias Utilizadas
+
+- **LangChain**: Framework para desenvolvimento com LLMs
+- **LangChain OpenAI**: Integração com modelos da OpenAI
+- **LangGraph**: Orquestração de agentes (para aulas futuras)
+- **Pydantic**: Validação de dados e schemas
+- **FAISS**: Busca vetorial (para aulas futuras)
+- **python-dotenv**: Gerenciamento de variáveis de ambiente
 
 ## 📦 Pré-requisitos
 
@@ -55,12 +92,6 @@ python -m pip install -r requirements.txt
 
 Crie um arquivo `.env` na raiz do projeto:
 
-```bash
-cp .env.example .env
-```
-
-Edite o arquivo `.env` e adicione sua chave da API:
-
 ```env
 OPENAI_API_KEY=sua-chave-api-aqui
 ```
@@ -69,82 +100,56 @@ OPENAI_API_KEY=sua-chave-api-aqui
 
 ## 🎯 Como Usar
 
-Execute o script principal:
+Execute qualquer script de aula:
 
 ```bash
-python main.py
+# Aula 1 - Básico
+python aula001.py
+
+# Aula 2 - ChatPromptTemplate
+python aula002.py
+
+# Aula 3 - Cadeias LCEL
+python aula003.py
+
+# Aula 4 - Saída JSON
+python aula004.py
+
+# Aula 5 - Múltiplas Cadeias
+python aula005.py
+
+# Aula 6 - Revisão
+python aula006.py
 ```
 
-O script irá:
-1. Carregar a chave da API do arquivo `.env`
-2. Inicializar o modelo GPT-3.5-turbo via LangChain
-3. Gerar um plano de atividades personalizado com base nos parâmetros definidos
-4. Exibir o plano completo no terminal
-
-### Personalização
-
-Edite o arquivo [main.py](main.py) para ajustar os parâmetros:
-
-```python
-numero_dias = 7        # Quantidade de dias do plano
-numero_criancas = 2    # Número de crianças
-atividade = "música"   # Tema das atividades (música, arte, esportes, etc.)
-```
-
-## 📚 Estrutura do Projeto
+## 📂 Estrutura do Projeto
 
 ```
 20260203-langchain/
-├── main.py              # Script principal
+├── aula001.py           # Introdução ao LangChain
+├── aula002.py           # ChatPromptTemplate
+├── aula003.py           # Cadeias com LCEL
+├── aula004.py           # Saída estruturada JSON
+├── aula005.py           # Múltiplas cadeias
+├── aula006.py           # Revisão de cadeias
 ├── requirements.txt     # Dependências do projeto
-├── .env.example        # Exemplo de configuração
-├── .env                # Suas configurações (não versionar!)
-└── README.md           # Esta documentação
+├── README.md            # Este arquivo
+└── .env                 # Variáveis de ambiente (não versionado)
 ```
 
-## 📦 Dependências
+## 📖 Conceitos Principais
 
-- **langchain** - Framework para desenvolvimento com LLMs
-- **langchain-openai** - Integração do LangChain com OpenAI
-- **langgraph** - Extensão do LangChain para workflows
-- **python-dotenv** - Gerenciamento de variáveis de ambiente
-- **faiss-cpu** - Biblioteca para busca por similaridade
-- **pypdf** - Manipulação de arquivos PDF
+| Conceito | Descrição |
+|----------|------------|
+| **LCEL** | LangChain Expression Language - sintaxe com operador `\|` |
+| **Chain** | Sequência de componentes conectados |
+| **PromptTemplate** | Template para formatação de prompts |
+| **OutputParser** | Processa e estrutura a saída do modelo |
+| **Pydantic** | Validação de schemas para saídas JSON |
 
-## 🔧 Comandos Úteis
+## 🔧 Parâmetros do Modelo
 
-### Atualizar dependências
-
-```bash
-python -m pip install -r requirements.txt --upgrade
-```
-
-### Listar dependências instaladas
-
-```bash
-pip freeze
-```
-
-## 📖 Exemplos de Saída
-
-Ao executar o script com os parâmetros padrão, você receberá um plano de atividades como:
-
-```
-Plano de Atividades:
-Dia 1: Explorando instrumentos musicais
-- Atividade: Conhecer diferentes instrumentos musicais através de vídeos e sons
-- Descrição: As crianças aprenderão sobre violão, piano, bateria...
-
-Dia 2: Cantando juntos
-- Atividade: Aprender uma música infantil simples
-...
-```
-
-## 🔧 Ajustes no Modelo
-
-### Ajustar parâmetros do LLM
-
-No arquivo [main.py](main.py), você pode modificar:
+Em todos os scripts, você pode ajustar os parâmetros do modelo:
 
 ```python
 modelo = ChatOpenAI(
@@ -157,9 +162,9 @@ modelo = ChatOpenAI(
 ## 🔗 Recursos
 
 - [Documentação do LangChain](https://python.langchain.com/docs/)
+- [LCEL - LangChain Expression Language](https://python.langchain.com/docs/concepts/lcel/)
 - [Documentação Oficial da OpenAI](https://platform.openai.com/docs)
-- [LangChain OpenAI Integration](https://python.langchain.com/docs/integrations/chat/openai)
-- [Preços da API](https://openai.com/pricing)
+- [Pydantic](https://docs.pydantic.dev/)
 
 ## 📄 Licença
 

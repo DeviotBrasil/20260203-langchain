@@ -5,10 +5,55 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run app",
+            "name": "Run aula001",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/main.py",
+            "program": "${workspaceFolder}/aula001.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/bin/python"
+        },
+        {
+            "name": "Run aula002",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/aula002.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/bin/python"
+        },
+        {
+            "name": "Run aula003",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/aula003.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/bin/python"
+        },
+        {
+            "name": "Run aula004",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/aula004.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/bin/python"
+        },
+        {
+            "name": "Run aula005",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/aula005.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/bin/python"
+        },
+        {
+            "name": "Run aula006",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/aula006.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
             "python": "${workspaceFolder}/.venv/bin/python"
