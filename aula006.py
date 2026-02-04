@@ -1,42 +1,49 @@
 """
-Aula 006 - Revisão: Cadeias Simples com LCEL
-=============================================
+Aula 006 - Memória de Conversação com RunnableWithMessageHistory
+================================================================
 
-Este script é uma revisão/consolidação dos conceitos de cadeias simples
-com LCEL (LangChain Expression Language), similar à aula003.
+Este script demonstra como adicionar memória de conversação a uma cadeia LCEL
+usando RunnableWithMessageHistory, permitindo que o modelo mantenha contexto
+entre múltiplas interações.
 
-Conceitos revisados:
-- PromptTemplate: Template básico para prompts
+Conceitos abordados:
+- ChatPromptTemplate com placeholder para histórico
+- InMemoryChatMessageHistory: Armazenamento de mensagens em memória
+- RunnableWithMessageHistory: Wrapper que adiciona memória a cadeias
+- Gerenciamento de sessões para múltiplas conversas
 - Operador pipe (|): Sintaxe LCEL para encadeamento
-- StrOutputParser: Extração de texto da resposta
-- Invocação de cadeias com dicionários
 
 Caso de uso:
-- Sugestão de cidades baseada em interesses do usuário
-- Exemplo prático de aplicação de LLM para recomendações
+- Chatbot de recomendação de cidades turísticas
+- Conversa multi-turno com contexto preservado
 
 Fluxo da cadeia:
-    {interesse: "praias"} -> PromptTemplate -> ChatOpenAI -> StrOutputParser -> string
+    {query, historico} -> ChatPromptTemplate -> ChatOpenAI -> StrOutputParser -> string
+                              ↑
+                    RunnableWithMessageHistory (gerencia histórico por sessão)
 
 Dependências:
 - langchain-openai: Integração do LangChain com OpenAI
-- langchain-core: Output parsers
+- langchain-core: Output parsers, histórico de mensagens
 - python-dotenv: Gerenciamento de variáveis de ambiente
 """
 
 import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
-from langchain.prompts import PromptTemplate
+from langchain.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.chat_history import InMemoryChatMessageHistory
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain.globals import set_debug
 
 
 def main():
     """
-    Função principal que demonstra uma cadeia simples com LCEL.
+    Função principal que demonstra memória de conversação com LCEL.
     
-    Esta aula serve como revisão e consolidação dos conceitos
-    aprendidos nas aulas anteriores sobre cadeias básicas.
+    Utiliza RunnableWithMessageHistory para manter o contexto
+    entre múltiplas perguntas, permitindo conversas multi-turno.
     """
     # Carrega as variáveis de ambiente do arquivo .env
     load_dotenv()
@@ -44,14 +51,7 @@ def main():
     # Obtém a chave da API
     api_key = os.getenv('OPENAI_API_KEY')
 
-    # Criação do template de prompt simples
-    # Define como a entrada do usuário será formatada para o modelo
-    prompt_cidade = PromptTemplate(
-        template="Sugira uma cidade dado o meu interesse por {interesse}.",
-        input_variables=["interesse"],
-    )
-       
-    # Inicialização do modelo ChatOpenAI
+    # Inicialização do modelo (compartilhado entre as cadeias)
     modelo = ChatOpenAI(
         model_name="gpt-3.5-turbo",
         openai_api_key=api_key,
@@ -59,17 +59,47 @@ def main():
         max_tokens=500
     )
 
-    # Criação da cadeia usando LCEL
-    # prompt_cidade: Formata a entrada
-    # modelo: Processa e gera resposta
-    # StrOutputParser: Extrai o texto da resposta
-    cadeia = prompt_cidade | modelo | StrOutputParser()
+    prompt_sugestao = ChatPromptTemplate.from_messages(
+        [
+            ("system", "Você é um assistente especializado em recomendar cidades turísticas com base nos interesses do usuário."),
+            ("placeholder", "{historico}"),
+            ("human", "{query}"),
+        ]
+    )
 
-    # Executa a cadeia com o interesse do usuário
-    # Retorna uma string com a sugestão de cidade
-    resposta = cadeia.invoke({"interesse": "praias"})
-    print(resposta)
+    cadeia = prompt_sugestao | modelo | StrOutputParser()
 
+    memoria = {}
+    sessao_id = "aula006_sessao1"
+
+    def historico_por_sessao(sessao_id: str) -> InMemoryChatMessageHistory:
+        if sessao_id not in memoria:
+            memoria[sessao_id] = InMemoryChatMessageHistory()
+
+        return memoria[sessao_id]  
+
+    lista_pergunta = [
+        "Quero visitar cidades com muitas praias. Quais você recomenda?",
+        "Qual a melhor epoca do ano para visitar essas cidades?",
+    ]
+
+    cadeia_com_memoria = RunnableWithMessageHistory(
+        runnable=cadeia,
+        get_session_history=historico_por_sessao,
+        input_messages_key="query",
+        history_messages_key="historico",
+    )
+
+    for pergunta in lista_pergunta:
+        resposta = cadeia_com_memoria.invoke(
+            {
+                "query": pergunta
+            },
+            config={"session_id": sessao_id}
+        )
+
+        print("Usuario: ", pergunta)
+        print("Assistente: ", resposta, "\n")
 
 if __name__ == "__main__":
     main()

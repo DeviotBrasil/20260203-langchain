@@ -118,7 +118,7 @@ python aula004.py
 # Aula 5 - Múltiplas Cadeias
 python aula005.py
 
-# Aula 6 - Revisão
+# Aula 6 - Memória de Conversação
 python aula006.py
 ```
 
@@ -131,7 +131,7 @@ python aula006.py
 ├── aula003.py           # Cadeias com LCEL
 ├── aula004.py           # Saída estruturada JSON
 ├── aula005.py           # Múltiplas cadeias
-├── aula006.py           # Revisão de cadeias
+├── aula006.py           # Memória de conversação
 ├── requirements.txt     # Dependências do projeto
 ├── README.md            # Este arquivo
 └── .env                 # Variáveis de ambiente (não versionado)
@@ -146,6 +146,7 @@ python aula006.py
 | **PromptTemplate** | Template para formatação de prompts |
 | **OutputParser** | Processa e estrutura a saída do modelo |
 | **Pydantic** | Validação de schemas para saídas JSON |
+| **Memory** | Histórico de conversação com RunnableWithMessageHistory |
 
 ## 🔧 Parâmetros do Modelo
 
