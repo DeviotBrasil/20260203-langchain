@@ -32,7 +32,7 @@ import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
-from langchain_core.output_parsers import JsonOutputParser, StrOutputParser
+from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel, Field
 from langchain.globals import set_debug
 
